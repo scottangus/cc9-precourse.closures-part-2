@@ -9,11 +9,14 @@ function randomInteger(n) {
 }
 
 function gameGenerator(input) {
-  var gameInstance = { boundLimit : input,
-                      gameNumber : randomInteger(input),
-                      guesses : 0,
-                      guess(guessNum){return guessNum == this.gameNumber ? true : false;},
-                      reset(){this.gameNumber = randomInteger(this.boundLimit);this.guesses = 0;},
+  const boundLimit = input;
+  var gameNumber = randomInteger(input);
+  var guesses = 0;
+  var gameInstance = {
+                      guess(guessNum){guesses++;return guessNum == gameNumber ? true : false;},
+                      reset(){gameNumber = randomInteger(boundLimit);guesses = 0;},
+                      giveUp(){var returnMe = gameNumber;this.reset();return returnMe;},
+                      numberGuesses(){return guesses;}
   };
   return gameInstance;
 }
