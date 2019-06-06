@@ -13,28 +13,52 @@ function gameGenerator(input) {
   var gameNumber = randomInteger(input);
   var guesses = 0;
   var gameInstance = {
-                      guess(guessNum){guesses++;return guessNum == gameNumber ? true : false;},
-                      reset(){gameNumber = randomInteger(boundLimit);guesses = 0;},
-                      giveUp(){var returnMe = gameNumber;this.reset();return returnMe;},
-                      numberGuesses(){return guesses;}
+    guess(guessNum){guesses++;return guessNum == gameNumber ? true : false;},
+    reset(){gameNumber = randomInteger(boundLimit);guesses = 0;},
+    giveUp(){var returnMe = gameNumber;this.reset();return returnMe;},
+    numberGuesses(){return guesses;}
   };
   return gameInstance;
 }
 
 function accountGenerator(initial) {
   let balance = initial;
+  let transactions = [];
 
   return {
+    getBalance: function() {return balance;},
     withdraw: function(amount) {
+      var withdrawal = {
+        type: "withdrawal",
+        amount: amount,
+        before: balance,
+        after: null,
+        status: null
+      };
       if (balance - amount >= 0) {
         balance = balance - amount;
-        return `Here’s your money: $${amount}`;
+        withdrawal.after = balance;
+        withdrawal.status = "approved";
+        transactions.unshift(withdrawal);
+        return withdrawal;
       }
-      return "Insufficient funds.";
+      withdrawal.after = balance;
+      withdrawal.status = "denied";
+      transactions.unshift(withdrawal);
+      return withdrawal;
     },
     deposit: function(amount) {
+      var deposited = {
+        type: "deposit",
+        amount: amount,
+        before: balance,
+        after: null,
+        state: "approved"
+      }
       balance = balance + amount;
-      return `Your balance is: $${balance}`;
+      deposited.after = balance;
+      transactions.unshift(deposited);
+      return deposited;
     }
   };
 }
