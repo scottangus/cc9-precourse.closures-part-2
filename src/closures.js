@@ -64,7 +64,7 @@ function accountGenerator(initial) {
     },
     //This function returns a slice of the transaction array with length specified by user
     transactionHistory: function(numberOf){
-      return transactions.slice(0, numberOf);
+      return transactions.slice(0, numberOf).reverse();
     },
     averageTransaction: function(){
       //This function calculates and returns the average deposit
