@@ -33,7 +33,8 @@ function accountGenerator(initial) {
         amount: amount,
         before: balance,
         after: null,
-        status: null
+        status: null,
+        time: new Date()
       };
       if (balance - amount >= 0) {
         balance = balance - amount;
@@ -53,7 +54,8 @@ function accountGenerator(initial) {
         amount: amount,
         before: balance,
         after: null,
-        state: "approved"
+        status: "approved",
+        time: new Date()
       }
       balance = balance + amount;
       deposited.after = balance;
