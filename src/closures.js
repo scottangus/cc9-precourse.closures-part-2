@@ -59,6 +59,45 @@ function accountGenerator(initial) {
       deposited.after = balance;
       transactions.unshift(deposited);
       return deposited;
+    },
+    //This function returns a slice of the transaction array with length specified by user
+    transactionHistory: function(numberOf){
+      return transactions.slice(0, numberOf);
+    },
+    averageTransaction: function(){
+      //This function calculates and returns the average deposit
+      function averageDeposits(){
+        var sumDeposits = 0;
+        var totalDeposits = 0;
+        var averageDeposit = 0;
+        transactions.forEach(function(n){
+          if (n["type"] === "deposit") {
+            sumDeposits += n["amount"];
+            totalDeposits++;
+          }
+        }); 
+        if (totalDeposits > 0) {averageDeposit = sumDeposits / totalDeposits;}
+        return averageDeposit;
+      }
+      //This function calculates and returns the average withdrawal
+      function averageWithdrawals(){
+        var sumWithdrawals = 0;
+        var totalWithdrawals = 0;
+        var averageWithdrawals = 0;
+        transactions.forEach(function(p){
+          if (p["type"] === "withdrawal" && p["status"] === "approved"){
+            sumWithdrawals += p["amount"];
+            totalWithdrawals++;
+          }
+        });
+        if (totalWithdrawals > 0) {averageWithdrawals = sumWithdrawals / totalWithdrawals;}
+        return averageWithdrawals;
+      }
+      //This returns an object containing the average deposit and withdrawals
+      return {
+        deposit: averageDeposits(),
+        withdrawal: averageWithdrawals()
+      };
     }
   };
 }
